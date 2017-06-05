@@ -136,20 +136,20 @@
                 "Value" : "WebPubTest"
             }
          ]
-      },
+      }
+    },
 
-  	  "%WaitHandle%" : {
-	    "Type" : "AWS::CloudFormation::WaitConditionHandle"
-	  },
+    "%WaitHandle%" : {
+	  "Type" : "AWS::CloudFormation::WaitConditionHandle"
+    },
 
-	  "%WaitHandle%Condition" : {
-	    "Type" : "AWS::CloudFormation::WaitCondition",
-	    "DependsOn" : "WebPublish",
-	    "Properties" : {
-		  "Handle" : {"Ref" : "%WaitHandle%"},
-		  "Timeout" : "3600"
-	    }
-	  }
+    "%WaitHandle%Condition" : {
+	  "Type" : "AWS::CloudFormation::WaitCondition",
+	  "DependsOn" : "WebPublish",
+	  "Properties" : {
+  	    "Handle" : {"Ref" : "%WaitHandle%"},
+	    "Timeout" : "3600"
+	  }  
     }
   },
 
