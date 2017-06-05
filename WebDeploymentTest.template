@@ -126,7 +126,7 @@
           " --region ", { "Ref" : "AWS::Region" }, "\n",
 		  
 		  "cfn-signal.exe -e %ERRORLEVEL%", 
-		  " --stack ", { "Fn::Base64" : { "Ref" : "%WaitHandle%" }}, "\n",
+		  " --stack ", { "Ref" : "AWS::StackName" }, "\n",
           
           "</script>"
           ]]}},
@@ -137,19 +137,6 @@
             }
          ]
       }
-    },
-
-    "%WaitHandle%" : {
-	  "Type" : "AWS::CloudFormation::WaitConditionHandle"
-    },
-
-    "%WaitHandle%Condition" : {
-	  "Type" : "AWS::CloudFormation::WaitCondition",
-	  "DependsOn" : "WebPublish",
-	  "Properties" : {
-  	    "Handle" : {"Ref" : "%WaitHandle%"},
-	    "Timeout" : "3600"
-	  }  
     }
   },
 
