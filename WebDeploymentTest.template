@@ -83,9 +83,7 @@
                   "path=Resources.WebPublish.Metadata.AWS::CloudFormation::Init\n",
                   "action=cfn-init.exe -v -s ", { "Ref" : "AWS::StackId" },
                                                  " -r WebPublish",
-                                                 " --region ", { "Ref" : "AWS::Region" }, "\n",
-				  "cfn-signal.exe -e %ERRORLEVEL%", 
-				  " --stack ", { "Ref" : "AWS::StackName" }, "\n"
+                                                 " --region ", { "Ref" : "AWS::Region" }, "\n"
                 ]]}
               }
             },
@@ -128,7 +126,7 @@
           " --region ", { "Ref" : "AWS::Region" }, "\n",
 		  
 		  "cfn-signal.exe -e %ERRORLEVEL%", 
-		  " --stack ", { "Ref" : "AWS::StackName" }, "\n",
+		  " --stack ", { "Fn::Base64" : { "Ref" : "%WaitHandle%" }}, "\n",
           
           "</script>"
           ]]}},
@@ -138,7 +136,20 @@
                 "Value" : "WebPubTest"
             }
          ]
-      }
+      },
+
+  	  "%WaitHandle%" : {
+	    "Type" : "AWS::CloudFormation::WaitConditionHandle"
+	  },
+
+	  "%WaitHandle%Condition" : {
+	    "Type" : "AWS::CloudFormation::WaitCondition",
+	    "DependsOn" : "WebPublish",
+	    "Properties" : {
+		  "Handle" : {"Ref" : "%WaitHandle%"},
+		  "Timeout" : "3600"
+	    }
+	  }
     }
   },
 
