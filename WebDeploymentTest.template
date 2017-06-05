@@ -43,14 +43,6 @@
     }
   },
 
-  "Mappings" : {
-    "AWSRegion2AMI" : {
-      "us-east-1"        : {"Windows2016" : "ami-f1b5cfe7", "Windows2012r2" : "ami-271b6d31"},
-      "us-east-2"        : {"Windows2016" : "ami-799bbc1c", "Windows2012r2" : "ami-7fc4e31a"}
-    }
-
-  },
-
   "Resources" : {
     "WebPublishSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
@@ -58,8 +50,6 @@
         "GroupDescription" : "Enable HTTP and RDP",
         "SecurityGroupIngress" : [
           {"IpProtocol" : "tcp", "FromPort" : "80", "ToPort" : "80", "CidrIp" : "0.0.0.0/0"},
-		  {"IpProtocol" : "tcp", "FromPort" : "8153", "ToPort" : "8153", "CidrIp" : "0.0.0.0/0"},
-		  {"IpProtocol" : "tcp", "FromPort" : "8154", "ToPort" : "8154", "CidrIp" : "0.0.0.0/0"},
           {"IpProtocol" : "tcp", "FromPort" : "3389", "ToPort" : "3389", "CidrIp" : { "Ref" : "SourceCidrForRDP" }}
         ]
 		
@@ -97,10 +87,7 @@
 				  "cfn-signal.exe -e %ERRORLEVEL%", 
 				  " --stack ", { "Ref" : "AWS::StackName" }, "\n"
                 ]]}
-              },
-			  "C:\\WebPublishFile\\Git-2.13.0-64-bit.exe" : {
-			    "source" : "https://s3.us-east-2.amazonaws.com/win-install-apps/Git-2.13.0-64-bit.exe"
-			  }
+              }
             },
             "commands" : {
               "1-removeExistingWebRoot" : {
