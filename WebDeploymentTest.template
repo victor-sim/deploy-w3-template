@@ -44,7 +44,7 @@
   },
 
   "Resources" : {
-    "WebPublishSecurityGroup" : {
+    "WebPubTestSecurityGroup" : {
       "Type" : "AWS::EC2::SecurityGroup",
       "Properties" : {
         "GroupDescription" : "Enable HTTP and RDP",
@@ -56,14 +56,14 @@
       }
     },
 	
-	"WebPublishEIP" : {
+	"WebPubTestEIP" : {
       "Type" : "AWS::EC2::EIP",
       "Properties" : {
-        "InstanceId" : { "Ref" : "WebPublish" }
+        "InstanceId" : { "Ref" : "WebPubTest" }
       }
     },
 
-    "WebPublish": {
+    "WebPubTest": {
       "Type" : "AWS::EC2::Instance",
       "Metadata" : {
         "AWS::CloudFormation::Init" : {
@@ -80,9 +80,9 @@
                 "content": { "Fn::Join" : ["", [
                   "[cfn-auto-reloader-hook]\n",
                   "triggers=post.update\n",
-                  "path=Resources.WebPublish.Metadata.AWS::CloudFormation::Init\n",
+                  "path=Resources.WebPubTest.Metadata.AWS::CloudFormation::Init\n",
                   "action=cfn-init.exe -v -s ", { "Ref" : "AWS::StackId" },
-                                                 " -r WebPublish",
+                                                 " -r WebPubTest",
                                                  " --region ", { "Ref" : "AWS::Region" }, "\n"
                 ]]}
               }
@@ -116,13 +116,13 @@
       "Properties": {
         "InstanceType" : { "Ref" : "InstanceType" },
         "ImageId" : { "Ref" : "AmiId" },
-        "SecurityGroups" : [ {"Ref" : "WebPublishSecurityGroup"} ],
+        "SecurityGroups" : [ {"Ref" : "WebPubTestSecurityGroup"} ],
         "KeyName" : { "Ref" : "KeyName" },
         "UserData" : { "Fn::Base64" : { "Fn::Join" : ["", [
           "<script>\n",
 
           "cfn-init.exe -v -s ", { "Ref" : "AWS::StackId" }, 
-          " -r WebPublish",
+          " -r WebPubTest",
           " --region ", { "Ref" : "AWS::Region" }, "\n",
 		  
 		  "cfn-signal.exe -e %ERRORLEVEL%", 
@@ -141,13 +141,13 @@
   },
 
   "Outputs" : {
-    "WebPublishURL" : {
-      "Value" : { "Fn::Join" : ["", ["http://", { "Ref" : "WebPublishEIP" } ]] },
-      "Description" : "WebPublish instance URL."
+    "WebPubTestURL" : {
+      "Value" : { "Fn::Join" : ["", ["http://", { "Ref" : "WebPubTestEIP" } ]] },
+      "Description" : "WebPubTest instance URL."
     },
-	"WebPublishInstanceId" : {
-	  "Value" :  { "Ref" : "WebPublish" } ,
-      "Description" : "WebPublish instance ID."
+	"WebPubTestInstanceId" : {
+	  "Value" :  { "Ref" : "WebPubTest" } ,
+      "Description" : "WebPubTest instance ID."
 	}
   }
 }
