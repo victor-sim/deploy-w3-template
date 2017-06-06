@@ -40,6 +40,13 @@
       "MinLength" : "5",
       "MaxLength" : "15",
       "AllowedPattern" : "^ami-[0-9, a-z, A-Z]+$"
+    },
+	
+    "AdminPassword" : {
+      "Description" : "Password for Admin Account",
+      "Type" : "String",
+      "MinLength" : "5",
+      "MaxLength" : "24"
     }
   },
 
@@ -86,24 +93,17 @@
                                                  " --region ", { "Ref" : "AWS::Region" }, "\n"
                 ]]}
               },
-			  "C:\\InitFiles\\init.ps1" : {
-				"source" : "https://s3.us-east-2.amazonaws.com/script-share/init.ps1"
+			  "C:\\InitFiles\\InitScript.ps1" : {
+				"source" : "https://s3.us-east-2.amazonaws.com/script-share/InitScript.ps1"
 			  }
             },
             "commands" : {
-              "1-removeExistingWebRoot" : {
-                "command" : "rmdir /s /q C:\\inetpub\\wwwroot"
-              },
-			  
-			  "2-getLatestFromGit" : {
-                "command" : { "Fn::Join" : ["", [
-				  "\"C:\\Program Files\\Git\\bin\\git.exe\" clone ", { "Ref" : "GitRepoAddress" },
-				  " C:\\inetpub\\wwwroot"
+              "1-PS" : {
+			    "command" : { "Fn::Join" : ["", [
+					"powershell.exe -ExecutionPolicy RemoteSigned -NonInteractive -Command \"C:\\InitFiles\\InitScript.ps1\"",
+					" -GitRepoUrl ", { "Ref" : "GitRepoAddress" },
+					" -AdminPw ", { "Ref" : "AdminPassword" }
 				]]}
-              },
-			  
-			  "3-PS" : {
-			    "command" : "powershell.exe -ExecutionPolicy RemoteSigned -NonInteractive -Command \"C:\\InitFiles\\init.ps1\""
 			  }
             },
             
