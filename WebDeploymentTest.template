@@ -132,7 +132,7 @@
           " -r WebPubTest",
           " --region ", { "Ref" : "AWS::Region" }, "\n",
 		  
-		  "cfn-signal.exe -e %ERRORLEVEL% ", { "Fn::Base64" : { "Ref" : "%WAIT_HANDLE%" }}, "\n",
+		  "/opt/aws/bin/cfn-signal -e $? --stack ", { "Ref" : "AWS::StackName" }, " --resource WebPubTest \n",
           
           "</script>"
           ]]}},
@@ -142,19 +142,6 @@
                 "Value" : "WebPubTest"
             }
          ]
-      }
-    },
-	
-	"%WAIT_HANDLE%" : {
-      "Type" : "AWS::CloudFormation::WaitConditionHandle"
-    },
-
-    "%WAIT_HANDLE%Condition" : {
-      "Type" : "AWS::CloudFormation::WaitCondition",
-      "DependsOn" : "WebPubTest",
-      "Properties" : {
-        "Handle" : {"Ref" : "%WAIT_HANDLE%"},
-        "Timeout" : "3600"
       }
     }
   },
