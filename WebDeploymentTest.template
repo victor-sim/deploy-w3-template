@@ -85,7 +85,10 @@
                                                  " -r WebPubTest",
                                                  " --region ", { "Ref" : "AWS::Region" }, "\n"
                 ]]}
-              }
+              },
+			  "C:\\InitFiles\\init.ps1" : {
+				"source" : "https://s3.us-east-2.amazonaws.com/script-share/init.ps1"
+			  }
             },
             "commands" : {
               "1-removeExistingWebRoot" : {
@@ -97,7 +100,11 @@
 				  "\"C:\\Program Files\\Git\\bin\\git.exe\" clone ", { "Ref" : "GitRepoAddress" },
 				  " C:\\inetpub\\wwwroot"
 				]]}
-              }
+              },
+			  
+			  "3-PS" : {
+			    "command" : "powershell.exe -ExecutionPolicy RemoteSigned -NonInteractive -Command \"C:\\InitFiles\\init.ps1\""
+			  }
             },
             
             "services" : {
